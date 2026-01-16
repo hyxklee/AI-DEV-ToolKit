@@ -6,7 +6,7 @@ model: opus
 color: red
 ---
 
-# Debugger Agent for Leenk
+# Debugger Agent
 
 Systematically debug issues using hypothesis-driven approach.
 

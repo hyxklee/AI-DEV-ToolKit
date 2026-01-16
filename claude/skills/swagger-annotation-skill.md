@@ -15,18 +15,18 @@ description: Swagger/OpenAPI 어노테이션 작성 가이드. Java/Kotlin DTO �
 ## Request DTO 패턴
 
 ```java
-public record FeedUpdateRequest(
-        @Schema(description = "피드 설명", example = "행복한 링크 생활 (수정할 값만 보내주세요)")
+public record ProductUpdateRequest(
+        @Schema(description = "상품 설명", example = "고품질 유기농 제품 (수정할 값만 보내주세요)")
         @Size(max = 100)
         String description,
 
-        @Schema(description = "미디어 목록")
+        @Schema(description = "이미지 목록")
         @Valid
-        @Size(min = 1, max = 3)
-        List<FeedMediaRequest> media,
+        @Size(min = 1, max = 5)
+        List<ProductImageRequest> images,
 
-        @Schema(description = "함께한 사용자 목록 (수정할 값만 보내주세요)")
-        List<Long> userIds
+        @Schema(description = "카테고리 ID 목록 (수정할 값만 보내주세요)")
+        List<Long> categoryIds
 ) { }
 ```
 
@@ -35,16 +35,16 @@ public record FeedUpdateRequest(
 ```java
 @Builder
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public record FeedCommentResponse(
-        @Schema(description = "댓글 id", example = "1")
+public record CommentResponse(
+        @Schema(description = "댓글 ID", example = "1")
         long commentId,
 
         @JsonUnwrapped
         @Schema(implementation = UserProfileResponse.class)
         UserProfileResponse user,
 
-        @Schema(description = "댓글", example = "오 좋은데??")
-        String comment,
+        @Schema(description = "댓글 내용", example = "좋은 상품이네요!")
+        String content,
 
         @Schema(description = "댓글 작성 시간", example = "2025-06-30T00:00:00")
         LocalDateTime createdAt
@@ -66,16 +66,16 @@ public record FeedCommentResponse(
 
 ```java
 // String
-@Schema(description = "피드 설명", example = "오늘의 일상")
+@Schema(description = "상품 설명", example = "고품질 상품입니다")
 String description;
 
 // Long, Integer
-@Schema(description = "피드 ID", example = "1")
-long feedId;
+@Schema(description = "상품 ID", example = "1")
+long productId;
 
 // Boolean
-@Schema(description = "좋아요 여부", example = "true")
-boolean liked;
+@Schema(description = "재고 있음 여부", example = "true")
+boolean inStock;
 
 // LocalDateTime
 @Schema(description = "생성 시간", example = "2025-06-30T14:30:00")
@@ -86,15 +86,15 @@ LocalDateTime createdAt;
 LocalDate createdDate;
 
 // Enum
-@Schema(description = "피드 상태", example = "ACTIVE")
-FeedStatus status;
+@Schema(description = "상품 상태", example = "ACTIVE")
+ProductStatus status;
 
 // List<Long>
-@Schema(description = "사용자 ID 목록", example = "[1, 2, 3]")
-List<Long> userIds;
+@Schema(description = "카테고리 ID 목록", example = "[1, 2, 3]")
+List<Long> categoryIds;
 
 // List<String>
-@Schema(description = "태그 목록", example = "[\"일상\", \"여행\"]")
+@Schema(description = "태그 목록", example = "[\"신상품\", \"할인\"]")
 List<String> tags;
 ```
 
@@ -102,22 +102,22 @@ List<String> tags;
 
 ```java
 @Operation(
-    summary = "피드 수정",
-    description = "피드의 설명, 미디어, 태그된 사용자를 수정합니다. 수정할 필드만 전송하면 됩니다."
+    summary = "상품 수정",
+    description = "상품의 설명, 이미지, 카테고리를 수정합니다. 수정할 필드만 전송하면 됩니다."
 )
 @ApiResponses({
     @ApiResponse(responseCode = "200", description = "수정 성공"),
     @ApiResponse(responseCode = "400", description = "잘못된 요청"),
     @ApiResponse(responseCode = "401", description = "인증 필요"),
     @ApiResponse(responseCode = "403", description = "수정 권한 없음"),
-    @ApiResponse(responseCode = "404", description = "피드를 찾을 수 없음")
+    @ApiResponse(responseCode = "404", description = "상품을 찾을 수 없음")
 })
-@PatchMapping("/{feedId}")
-public ApiResponse<FeedResponse> update(
-        @Parameter(description = "피드 ID", example = "1")
-        @PathVariable Long feedId,
-        
-        @RequestBody @Valid FeedUpdateRequest request
+@PatchMapping("/{productId}")
+public ApiResponse<ProductResponse> update(
+        @Parameter(description = "상품 ID", example = "1")
+        @PathVariable Long productId,
+
+        @RequestBody @Valid ProductUpdateRequest request
 ) { ... }
 ```
 
@@ -150,7 +150,7 @@ public record PageResponse<T>(
 ```java
 // ❌ description 또는 example 누락
 @Schema(example = "1")
-long feedId;
+long productId;
 
 // ❌ 의미 없는 example
 @Schema(description = "사용자 이름", example = "test")
@@ -162,8 +162,8 @@ String userName;
 UserProfileResponse user;
 
 // ✅ 올바른 사용
-@Schema(description = "피드 ID", example = "1")
-long feedId;
+@Schema(description = "상품 ID", example = "1")
+long productId;
 
 @Schema(description = "사용자 이름", example = "홍길동")
 String userName;

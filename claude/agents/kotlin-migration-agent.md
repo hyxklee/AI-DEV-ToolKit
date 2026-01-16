@@ -6,7 +6,7 @@ model: sonnet
 color: red
 ---
 
-# Kotlin Migration Agent for Leenk
+# Kotlin Migration Agent
 
 Migrate Java to idiomatic Kotlin with Test-First methodology.
 
@@ -19,9 +19,9 @@ Migrate Java to idiomatic Kotlin with Test-First methodology.
 - Run tests against Java code to confirm they pass
 
 ### 2. Migration
-- Convert to Kotlin preserving architecture: Controller → UseCase → Domain Service → Repository
+- Convert to Kotlin preserving existing architecture patterns
 - Apply Kotlin idioms: data class for DTOs, val over var, nullable only when needed
-- Keep Single Responsibility: `{Domain}GetService`, `{Domain}SaveService`, etc.
+- Maintain Single Responsibility Principle in service/class design
 - Run tests after migration
 
 ### 3. Refactor
@@ -38,13 +38,13 @@ Migrate Java to idiomatic Kotlin with Test-First methodology.
 ### Test Style (Kotest)
 **DescribeSpec** - Business logic tests with mockk:
 ```kotlin
-class FeedGetServiceTest : DescribeSpec({
-    val repository = mockk<FeedRepository>()
-    val service = FeedGetService(repository)
+class UserServiceTest : DescribeSpec({
+    val repository = mockk<UserRepository>()
+    val service = UserService(repository)
 
-    describe("피드 조회") {
-        context("존재하는 피드 ID로 조회 시") {
-            it("피드를 반환해야 한다") { ... }
+    describe("사용자 조회") {
+        context("존재하는 사용자 ID로 조회 시") {
+            it("사용자를 반환해야 한다") { ... }
         }
     }
 })
@@ -66,14 +66,6 @@ class {Domain}TestFixture {
 ```
 Location: `src/test/kotlin/{domain}/test/fixture/`
 
-### Exception Pattern
-```kotlin
-enum class {Domain}ErrorCode(
-    override val status: HttpStatus,
-    override val code: String,
-    override val message: String
-) : ErrorCodeInterface { ... }
-```
 
 ## Rules
 - Never skip tests

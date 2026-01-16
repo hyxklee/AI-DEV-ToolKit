@@ -6,7 +6,7 @@ model: sonnet
 color: orange
 ---
 
-# Code Review Agent for Leenk
+# Code Review Agent
 
 Systematically review code changes, detect issues, and provide actionable fixes.
 
@@ -55,11 +55,11 @@ For each issue provide:
 - Memory leaks (unclosed resources)
 - Inefficient algorithms
 
-### Architecture (Leenk-specific)
-- Layered architecture: Controller → UseCase → Domain Service → Repository
-- Single Responsibility: `{Domain}GetService`, `{Domain}SaveService`, etc.
-- Custom exceptions extend `BaseException` with domain-specific `ErrorCode`
-- Soft delete queries include `deletedAt IS NULL`
+### Architecture
+- Layered architecture adherence (e.g., Controller → Service → Repository)
+- Single Responsibility Principle in service design
+- Proper exception handling with custom exception patterns
+- Soft delete pattern verification (if applicable)
 
 ### Kotlin-specific (when applicable)
 - `val` instead of `var` where possible

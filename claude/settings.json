@@ -3,53 +3,26 @@
     "allow": [
       "Read(*)",
       "Bash(./gradlew:*)",
-      "Bash(git:*)",
       "Bash(ls:*)",
       "Bash(tree:*)",
       "Bash(grep:*)",
       "Bash(cat:*)",
-      "Bash(tee:*)",
       "Bash(find:*)",
-      "Bash(pwd:*)",
       "Bash(echo:*)",
-      "Bash(test:*)",
       "Grep(*)",
       "Glob(*)",
       "WebFetch(domain:code.claude.com)",
-      "WebFetch(domain:github.com)",
-      "WebSearch"
+      "WebFetch(domain:github.com)"
     ],
     "ask": [
       "Write(*)",
-      "Edit(*)"
+      "Edit(*)",
+      "Bash(git:*)"
     ],
     "deny": [
-      "Bash(rm:*)"
+      "Bash(rm:*)",
+      "Bash(git:push --force*)"
     ]
   },
-  "classifierPermissionsEnabled": true,
-  "hooks": {
-    "PostToolUse": [
-      {
-        "matcher": "Write",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "if [[ \"$FILE_PATH\" == *.kt ]]; then ./gradlew ktlintFormat --quiet; fi",
-            "statusMessage": "Running ktlint format..."
-          }
-        ]
-      },
-      {
-        "matcher": "Edit",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "if [[ \"$FILE_PATH\" == *.kt ]]; then ./gradlew ktlintFormat --quiet; fi",
-            "statusMessage": "Running ktlint format..."
-          }
-        ]
-      }
-    ]
-  }
+  "classifierPermissionsEnabled": true
 }
