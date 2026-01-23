@@ -3,16 +3,16 @@ name: swagger-annotation
 description: Swagger/OpenAPI 어노테이션 작성 가이드. Java/Kotlin DTO 및 Controller에 @Schema, @Operation, @ApiResponses 어노테이션을 일관되게 작성할 때 사용. SpringDoc OpenAPI 기반 프로젝트에서 API 문서화 시 활용.
 ---
 
-# Swagger 어노테이션 가이드
+# Swagger Annotation Guide
 
-## 기본 원칙
+## Core Principles
 
-- 모든 DTO 필드에 `@Schema` 필수
-- description은 한국어로 명확하게
-- example은 실제 사용 예시와 유사하게
-- Validation 어노테이션과 함께 사용
+- All DTO fields require `@Schema`
+- Descriptions in Korean, clear and concise
+- Examples should match real usage
+- Use together with Validation annotations
 
-## Request DTO 패턴
+## Request DTO Pattern
 
 ```java
 public record ProductUpdateRequest(
@@ -30,7 +30,7 @@ public record ProductUpdateRequest(
 ) { }
 ```
 
-## Response DTO 패턴
+## Response DTO Pattern
 
 ```java
 @Builder
@@ -51,18 +51,18 @@ public record CommentResponse(
 ) { }
 ```
 
-## @Schema 속성
+## @Schema Attributes
 
-**필수:**
-| 속성 | 조건 | 설명 |
-|------|------|------|
-| description | 항상 | 필드 설명 (한국어) |
-| example | 항상 | 실제와 유사한 예시 값 |
-| implementation | @JsonUnwrapped 시 | 펼쳐질 클래스 타입 |
+**Required:**
+| Attribute | Condition | Description |
+|-----------|-----------|-------------|
+| description | Always | Field description (Korean) |
+| example | Always | Example value similar to real usage |
+| implementation | With @JsonUnwrapped | Class type to be unwrapped |
 
-**선택:** hidden, deprecated, nullable, defaultValue
+**Optional:** hidden, deprecated, nullable, defaultValue
 
-## 타입별 example
+## Examples by Type
 
 ```java
 // String
@@ -98,7 +98,7 @@ List<Long> categoryIds;
 List<String> tags;
 ```
 
-## Controller 어노테이션
+## Controller Annotations
 
 ```java
 @Operation(
@@ -121,7 +121,7 @@ public ApiResponse<ProductResponse> update(
 ) { ... }
 ```
 
-## 페이징 Response 패턴
+## Paging Response Pattern
 
 ```java
 public record PageResponse<T>(
@@ -145,23 +145,23 @@ public record PageResponse<T>(
 ) { }
 ```
 
-## 자주 하는 실수
+## Common Mistakes
 
 ```java
-// ❌ description 또는 example 누락
+// ❌ Missing description or example
 @Schema(example = "1")
 long productId;
 
-// ❌ 의미 없는 example
+// ❌ Meaningless example
 @Schema(description = "사용자 이름", example = "test")
 String userName;
 
-// ❌ @JsonUnwrapped에 implementation 누락
+// ❌ Missing implementation for @JsonUnwrapped
 @JsonUnwrapped
 @Schema
 UserProfileResponse user;
 
-// ✅ 올바른 사용
+// ✅ Correct usage
 @Schema(description = "상품 ID", example = "1")
 long productId;
 
@@ -173,13 +173,13 @@ String userName;
 UserProfileResponse user;
 ```
 
-## 체크리스트
+## Checklist
 
 **DTO:**
-- [ ] 모든 필드에 @Schema(description, example)가 있는가?
-- [ ] @JsonUnwrapped 사용 시 implementation을 지정했는가?
+- [ ] All fields have @Schema(description, example)?
+- [ ] implementation specified when using @JsonUnwrapped?
 
 **Controller:**
-- [ ] @Operation(summary, description)이 있는가?
-- [ ] @ApiResponses로 모든 응답 코드를 문서화했는가?
-- [ ] @Parameter로 PathVariable, RequestParam을 설명했는가?
+- [ ] @Operation(summary, description) present?
+- [ ] All response codes documented with @ApiResponses?
+- [ ] PathVariable and RequestParam described with @Parameter?
