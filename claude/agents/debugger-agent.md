@@ -58,12 +58,12 @@ In order of likelihood:
 - IllegalStateException: object state mismatch
 - ConcurrentModificationException: modification during iteration
 
-### Spring/Kotlin Specific
+### Spring/Java/Kotlin Specific
 - Bean injection failure: circular reference, conditional bean, profile
 - Transaction issues: propagation, readOnly, rollback conditions
 - LazyInitializationException: lazy load after session close
 - Jackson serialization: circular reference, missing default constructor
-- Coroutine: context propagation, exception handling
+- Coroutine (Kotlin): context propagation, exception handling
 
 ### Intermittent Bugs
 - Race condition: concurrency, missing locks

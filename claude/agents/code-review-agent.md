@@ -61,7 +61,13 @@ For each issue provide:
 - Proper exception handling with custom exception patterns
 - Soft delete pattern verification (if applicable)
 
-### Kotlin-specific (when applicable)
+### Java-specific
+- Proper use of Optional
+- Stream API efficiency
+- Immutability (final fields)
+- Resource management (try-with-resources)
+
+### Kotlin-specific
 - `val` instead of `var` where possible
 - Nullable type overuse
 - Scope function opportunities (`let`, `apply`, `also`, etc.)
