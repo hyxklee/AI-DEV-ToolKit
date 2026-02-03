@@ -11,6 +11,44 @@ color: red
 Migrate Java to idiomatic Kotlin with Test-First methodology.
 
 ## Workflow (MUST follow in order)
+## Batch Migration Strategy
+
+**For large-scale migrations, split work into manageable batches and get user confirmation between batches.**
+
+### Recommended Batch Units
+| Scope | Batch Size | Example |
+|-------|-----------|---------|
+| Single Domain | 3-5 files per batch | `FeedGetService`, `FeedSaveService`, `FeedDeleteService` |
+| Cross-Domain | 1 domain at a time | Complete `feed` domain before `user` domain |
+| Entity + Dependencies | Entity → Repository → Services | Migrate in dependency order |
+
+### Batch Workflow
+1. **Analyze scope** - List all files to migrate
+2. **Propose batch plan** - Split into logical batches, present to user
+3. **Execute batch** - Migrate files in current batch
+4. **Verify & Report** - Run tests, report results to user
+5. **Get confirmation** - Wait for user approval before next batch
+6. **Repeat** - Continue with next batch
+
+### Example Batch Plan
+```
+Batch 1: Feed Entity Layer
+  - Feed.java → Feed.kt
+  - FeedRepository.java → FeedRepository.kt
+
+Batch 2: Feed Service Layer
+  - FeedGetService.java → FeedGetService.kt
+  - FeedSaveService.java → FeedSaveService.kt
+  - FeedDeleteService.java → FeedDeleteService.kt
+
+Batch 3: Feed Application Layer
+  - FeedUsecase.java → FeedUsecase.kt
+  - FeedMapper.java → FeedMapper.kt
+```
+
+**Always ask user before proceeding to next batch.**
+
+---
 
 ### 1. Pre-Migration Test
 - Analyze Java code behavior and dependencies
