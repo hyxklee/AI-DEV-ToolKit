@@ -81,24 +81,19 @@ class UserGetServiceTest : DescribeSpec({
     describe("findById") {
         context("when user exists") {
             it("should return user") {
-                // given
                 val user = UserTestFixture.createUser()
                 every { userRepository.findByIdAndDeletedAtIsNull(1L) } returns user
 
-                // when
                 val result = service.findById(1L)
 
-                // then
                 result shouldBe user
             }
         }
 
         context("when user does not exist") {
             it("should throw UserNotFoundException") {
-                // given
                 every { userRepository.findByIdAndDeletedAtIsNull(999L) } returns null
 
-                // when & then
                 shouldThrow<UserNotFoundException> {
                     service.findById(999L)
                 }
@@ -231,11 +226,9 @@ class UserControllerTest : DescribeSpec() {
         describe("GET /api/v1/users/{id}") {
             context("when user exists") {
                 it("should return 200 OK with user") {
-                    // given
                     val response = UserResponse(id = 1L, name = "Test User")
                     every { userUsecase.getUser(1L) } returns response
 
-                    // when & then
                     mockMvc.perform(get("/api/v1/users/{id}", 1L))
                         .andExpect(status().isOk)
                         .andExpect(jsonPath("$.id").value(1))
